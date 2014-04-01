@@ -1,0 +1,7 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+  <CheckBoxPreference
+      android:key="pref_key_disable_screenshots"
+      android:summary="@string/pref_disable_screenshots_summary"
+      android:title="@string/pref_disable_screenshots"
+      android:defaultValue="false" />
+</PreferenceScreen>

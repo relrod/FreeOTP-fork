@@ -44,6 +44,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
@@ -60,22 +63,28 @@ public class MainActivity extends Activity implements OnMenuItemClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        screenshotsDisabled =
+            sharedPref.getBoolean("pref_key_disable_screenshots", false);
+
         mTokenAdapter = new TokenAdapter(this);
         ((GridView) findViewById(R.id.grid)).setAdapter(mTokenAdapter);
 
-        // Don't permit screenshots since these might contain OTP codes.
-        getWindow().setFlags(LayoutParams.FLAG_SECURE, LayoutParams.FLAG_SECURE);
+        if (screenshotsDisabled)
+            getWindow().setFlags(
+                                 LayoutParams.FLAG_SECURE,
+                                 LayoutParams.FLAG_SECURE);
 
         mDataSetObserver = new DataSetObserver() {
-            @Override
-            public void onChanged() {
-                super.onChanged();
-                if (mTokenAdapter.getCount() == 0)
-                    findViewById(android.R.id.empty).setVisibility(View.VISIBLE);
-                else
-                    findViewById(android.R.id.empty).setVisibility(View.GONE);
-            }
-        };
+                @Override
+                public void onChanged() {
+                    super.onChanged();
+                    if (mTokenAdapter.getCount() == 0)
+                        findViewById(android.R.id.empty).setVisibility(View.VISIBLE);
+                    else
+                        findViewById(android.R.id.empty).setVisibility(View.GONE);
+                }
+            };
         mTokenAdapter.registerDataSetObserver(mDataSetObserver);
     }
 
@@ -83,6 +92,7 @@ public class MainActivity extends Activity implements OnMenuItemClickListener {
     protected void onResume() {
         super.onResume();
         mTokenAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -95,6 +105,7 @@ public class MainActivity extends Activity implements OnMenuItemClickListener {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         menu.findItem(R.id.action_add).setOnMenuItemClickListener(this);
+        menu.findItem(R.id.action_preferences).setOnMenuItemClickListener(this);
         menu.findItem(R.id.action_about).setOnMenuItemClickListener(this);
         return true;
     }
@@ -108,6 +119,10 @@ public class MainActivity extends Activity implements OnMenuItemClickListener {
 
         case R.id.action_about:
             startActivity(new Intent(this, AboutDialogActivity.class));
+            return true;
+
+        case R.id.action_preferences:
+            startActivity(new Intent(this, FreeOTPPreferencesActivity.class));
             return true;
         }
 
