@@ -63,8 +63,8 @@ public class MainActivity extends Activity implements OnMenuItemClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        screenshotsDisabled =
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean screenshotsDisabled =
             sharedPref.getBoolean("pref_key_disable_screenshots", false);
 
         mTokenAdapter = new TokenAdapter(this);
