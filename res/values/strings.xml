@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">FreeOTP</string>
+    <string name="app_name">FreeOTP (fork)</string>
     <string name="add">Add</string>
     <string name="about">About</string>
     <string name="preferences">Preferences</string>
