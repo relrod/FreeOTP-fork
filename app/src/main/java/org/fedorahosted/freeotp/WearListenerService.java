@@ -32,12 +32,12 @@ public class WearListenerService extends WearableListenerService {
             return;
         }
 
+        TokenAdapter ta = new TokenAdapter(this);
         String path = messageEvent.getPath();
         if (path.equals("/freeotp/start")) {
             StringBuilder msg = new StringBuilder();
             // Someone opened the freeotp smartwatch app. Send them the list
-            // of token names.
-            TokenAdapter ta = new TokenAdapter(this);
+            // of tokens.
             for (int i = 0; i < ta.getCount(); i++) {
                 Token t = ta.getItem(i);
                 msg.append(t.getID() + " " + t.getLabel() + "(" + t.getIssuer() + ")\n");
@@ -47,6 +47,21 @@ public class WearListenerService extends WearableListenerService {
                 messageEvent.getSourceNodeId(),
                 "/freeotp/list",
                 msg.toString().getBytes());
+        } else if (path.equals("/freeotp/token/request")) {
+            String idx = new String(messageEvent.getData());
+
+            TokenPersistence tp = new TokenPersistence(this);
+            Token t = ta.getItem(Integer.parseInt(idx));
+            TokenCode codes = t.generateCodes();
+            tp.save(t);
+
+            String code = codes.getCurrentCode();
+
+            Wearable.MessageApi.sendMessage(
+                googleApiClient,
+                messageEvent.getSourceNodeId(),
+                "/freeotp/token/code",
+                code.getBytes());
         }
     }
 }

@@ -2,7 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.wearable.view.CircledImageView
+    <!--<android.support.wearable.view.CircledImageView
         android:id="@+id/image"
         android:alpha="0.5"
         android:layout_height="52dp"
@@ -11,18 +11,16 @@
         app:circle_border_color="#FFFFFFFF"
         app:circle_border_width="2dp"
         app:circle_color="#00000000"
-        />
+        />-->
 
     <TextView
         android:id="@+id/text"
         android:alpha="0.5"
-        android:fontFamily="sans-serif-condensed-light"
         android:gravity="center_vertical"
         android:layout_height="52dp"
         android:layout_marginLeft="72dp"
         android:layout_marginRight="16dp"
         android:layout_width="wrap_content"
-        android:textColor="@color/white"
         android:textSize="14sp"
         />
 </merge>

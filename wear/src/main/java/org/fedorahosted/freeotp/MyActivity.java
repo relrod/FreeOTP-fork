@@ -41,7 +41,6 @@ public class MyActivity extends Activity implements
     public void onConnectionSuspended(int i) {
     }
 
-
     @Override
     public void onMessageReceived(final MessageEvent messageEvent) {
         runOnUiThread(new Runnable() {
@@ -54,6 +53,9 @@ public class MyActivity extends Activity implements
                             lines.add(s);
                         }
                         mAdapter.notifyDataSetChanged();
+                    } else if (path.equals("/freeotp/token/code")) {
+                        String msg = new String(messageEvent.getData());
+                        Toast.makeText(MyActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -144,13 +146,17 @@ public class MyActivity extends Activity implements
     }
 
     @Override
-    public void onClick(WearableListView.ViewHolder viewHolder) {
-        Toast.makeText(this, String.format("You selected item #%s", viewHolder.getPosition()), Toast.LENGTH_SHORT).show();
+    public void onTopEmptyRegionClick() {
     }
 
     @Override
-    public void onTopEmptyRegionClick() {
-        Toast.makeText(this, "You tapped into the empty area above the list", Toast.LENGTH_SHORT).show();
+    public void onClick(WearableListView.ViewHolder viewHolder) {
+        String msg = Integer.toString(viewHolder.getPosition());
+        Wearable.MessageApi.sendMessage(
+            mGoogleApiClient,
+            peerNode.getId(),
+            "/freeotp/token/request",
+            msg.getBytes());
     }
 
     public class MyListAdapter extends WearableListView.Adapter {
@@ -179,14 +185,14 @@ public class MyActivity extends Activity implements
 
     private final class MyItemView extends FrameLayout implements WearableListView.Item {
 
-        final CircledImageView image;
+        //final CircledImageView image;
         final TextView text;
         private float mScale;
 
         public MyItemView(Context context) {
             super(context);
             View.inflate(context, R.layout.wearablelistview_item, this);
-            image = (CircledImageView) findViewById(R.id.image);
+            //image = (CircledImageView) findViewById(R.id.image);
             text = (TextView) findViewById(R.id.text);
         }
 
@@ -208,19 +214,19 @@ public class MyActivity extends Activity implements
         @Override
         public void setScalingAnimatorValue(float value) {
             mScale = value;
-            image.setCircleRadius(mScale);
-            image.setCircleRadiusPressed(mScale);
+            /*image.setCircleRadius(mScale);
+              image.setCircleRadiusPressed(mScale);*/
         }
 
         @Override
         public void onScaleUpStart() {
-            image.setAlpha(1f);
+            /*    image.setAlpha(1f);*/
             text.setAlpha(1f);
         }
 
         @Override
         public void onScaleDownStart() {
-            image.setAlpha(0.5f);
+            /*    image.setAlpha(0.5f);*/
             text.setAlpha(0.5f);
         }
     }
