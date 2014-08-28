@@ -4,9 +4,17 @@ dependencies {
     compile 'com.google.zxing:core:3.1.0'
     compile 'com.google.code.gson:gson:2.3'
     compile 'com.squareup.picasso:picasso:2.3.3'
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.google.android.gms:play-services-wearable:+'
 }
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 20
     buildToolsVersion "20.0.0"
+
+
+    defaultConfig {
+        applicationId "org.fedorahosted.freeotp"
+    }
 }
