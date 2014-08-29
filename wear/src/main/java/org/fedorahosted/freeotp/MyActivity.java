@@ -172,7 +172,7 @@ public class MyActivity extends Activity implements
 
             TextView textView = (TextView) myItemView.findViewById(R.id.text);
             String line = lines.get(i);
-            textView.setText(line.substring(line.indexOf(" ")+1));
+            textView.setText(line);
             //CircledImageView imageView = (CircledImageView) myItemView.findViewById(R.id.image);
             //imageView.setImageResource(resourceId);
         }

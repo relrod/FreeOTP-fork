@@ -40,7 +40,11 @@ public class WearListenerService extends WearableListenerService {
             // of tokens.
             for (int i = 0; i < ta.getCount(); i++) {
                 Token t = ta.getItem(i);
-                msg.append(t.getID() + " " + t.getLabel() + "(" + t.getIssuer() + ")\n");
+                msg.append(t.getLabel());
+                if (t.getIssuer() != null && t.getIssuer() != "") {
+                    msg.append("(" + t.getIssuer() + ")");
+                }
+                msg.append("\n");
             }
             Wearable.MessageApi.sendMessage(
                 googleApiClient,
